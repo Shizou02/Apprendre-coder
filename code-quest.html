@@ -1,0 +1,1974 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CODE QUEST — Apprends à coder en jouant</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Fredoka:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0c0e17;
+        --panel: #121521;
+        --panel2: #181c2e;
+        --border: #1e2436;
+        --green: #22d68a;
+        --green-glow: rgba(34, 214, 138, 0.25);
+        --orange: #ff8c42;
+        --red: #ff4d6a;
+        --blue: #4facfe;
+        --purple: #a78bfa;
+        --yellow: #ffd43b;
+        --pink: #f472b6;
+        --text: #c8d6e5;
+        --text-dim: #5a6a80;
+        --code-bg: #0a0c14;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Fredoka", sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(0, 0, 0, 0.04) 3px,
+          rgba(0, 0, 0, 0.04) 6px
+        );
+        pointer-events: none;
+        z-index: 999;
+      }
+
+      /* HEADER */
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 24px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel);
+      }
+      .logo {
+        font-size: 20px;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--green), var(--blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+        cursor: pointer;
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .xp-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .xp-text {
+        font-size: 13px;
+        color: var(--yellow);
+        font-weight: 600;
+      }
+      .xp-bar {
+        width: 120px;
+        height: 8px;
+        background: var(--border);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .xp-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--yellow), var(--orange));
+        border-radius: 4px;
+        transition: width 0.8s ease;
+      }
+      .badge {
+        background: var(--orange);
+        color: #000;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+      .lang-badge {
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+      }
+      .lang-fr {
+        background: rgba(79, 172, 254, 0.15);
+        color: var(--blue);
+      }
+      .lang-mix {
+        background: rgba(167, 139, 250, 0.15);
+        color: var(--purple);
+      }
+      .lang-en {
+        background: rgba(34, 214, 138, 0.15);
+        color: var(--green);
+      }
+      .streak-text {
+        font-size: 12px;
+        color: var(--yellow);
+      }
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 20px 40px;
+      }
+
+      /* ANIMATIONS */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes robotBob {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(34, 214, 138, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(34, 214, 138, 0.4);
+        }
+      }
+
+      /* ======== WELCOME SCREEN ======== */
+      .welcome {
+        padding: 50px 0 30px;
+        animation: fadeUp 0.5s ease;
+        text-align: center;
+      }
+      .welcome-robot {
+        font-size: 80px;
+        animation: float 3s ease-in-out infinite;
+        margin-bottom: 20px;
+      }
+      .welcome h1 {
+        font-size: 36px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+      .welcome h1 span {
+        background: linear-gradient(135deg, var(--green), var(--blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .welcome-sub {
+        font-size: 16px;
+        color: var(--text-dim);
+        max-width: 560px;
+        margin: 0 auto 12px;
+        line-height: 1.7;
+      }
+      .welcome-intro {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px 28px;
+        max-width: 620px;
+        margin: 24px auto 36px;
+        text-align: left;
+      }
+      .welcome-intro .robot-mini {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+      .welcome-intro .robot-face {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        background: var(--panel);
+        border: 2px solid var(--green);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 0 16px var(--green-glow);
+      }
+      .welcome-intro .robot-text {
+        font-size: 15px;
+        line-height: 1.75;
+        flex: 1;
+      }
+      .welcome-intro .robot-text strong {
+        color: var(--green);
+      }
+      .welcome-intro .robot-text em {
+        color: var(--orange);
+        font-style: normal;
+        font-weight: 600;
+      }
+
+      .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        max-width: 780px;
+        margin: 0 auto;
+      }
+      .course-card {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px 22px;
+        cursor: pointer;
+        transition: all 0.25s;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+      }
+      .course-card:hover:not(.locked) {
+        border-color: var(--green);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px var(--green-glow);
+      }
+      .course-card.locked {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .course-card .cc-icon {
+        font-size: 44px;
+        margin-bottom: 14px;
+        display: block;
+      }
+      .course-card .cc-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 6px;
+      }
+      .course-card .cc-desc {
+        font-size: 12px;
+        color: var(--text-dim);
+        line-height: 1.6;
+        margin-bottom: 14px;
+      }
+      .course-card .cc-tag {
+        font-size: 10px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        display: inline-block;
+        font-weight: 600;
+      }
+      .cc-tag-green {
+        background: rgba(34, 214, 138, 0.12);
+        color: var(--green);
+      }
+      .cc-tag-orange {
+        background: rgba(255, 140, 66, 0.12);
+        color: var(--orange);
+      }
+      .cc-tag-blue {
+        background: rgba(79, 172, 254, 0.12);
+        color: var(--blue);
+      }
+      .course-card .cc-soon {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        font-size: 9px;
+        background: var(--border);
+        color: var(--text-dim);
+        padding: 3px 8px;
+        border-radius: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .course-card .cc-progress {
+        margin-top: 12px;
+        height: 6px;
+        background: var(--border);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .course-card .cc-progress-fill {
+        height: 100%;
+        background: var(--green);
+        border-radius: 3px;
+        transition: width 0.5s;
+      }
+      .course-card .cc-progress-text {
+        font-size: 10px;
+        color: var(--text-dim);
+        margin-top: 6px;
+      }
+
+      /* LESSON / CHALLENGE / MAP styles (same as before) */
+      .lesson-screen {
+        padding-top: 30px;
+        animation: fadeUp 0.4s ease;
+      }
+      .lesson-chapter {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--purple);
+        font-weight: 600;
+      }
+      .lesson-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #fff;
+        margin-top: 4px;
+      }
+      .lesson-badge {
+        font-size: 11px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        background: rgba(167, 139, 250, 0.12);
+        color: var(--purple);
+        display: inline-block;
+        margin-top: 6px;
+      }
+      .robot-bubble {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        margin: 24px 0;
+        animation: fadeUp 0.5s ease;
+      }
+      .robot-avatar {
+        width: 64px;
+        height: 64px;
+        flex-shrink: 0;
+        background: var(--panel2);
+        border: 2px solid var(--green);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        box-shadow: 0 0 20px var(--green-glow);
+        animation: robotBob 3s ease-in-out infinite;
+      }
+      .bubble {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 4px 18px 18px 18px;
+        padding: 18px 22px;
+        font-size: 15px;
+        line-height: 1.75;
+        flex: 1;
+      }
+      .bubble strong {
+        color: var(--green);
+      }
+      .bubble em {
+        color: var(--orange);
+        font-style: normal;
+        font-weight: 600;
+      }
+      .bubble .highlight {
+        display: inline;
+        background: var(--code-bg);
+        color: var(--green);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: "Fira Code", monospace;
+        font-size: 13px;
+        border: 1px solid var(--border);
+      }
+      .translate-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0;
+        font-size: 13px;
+        font-family: "Fira Code", monospace;
+      }
+      .translate-table th {
+        text-align: left;
+        padding: 8px 14px;
+        font-family: "Fredoka", sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--text-dim);
+        border-bottom: 1px solid var(--border);
+      }
+      .translate-table td {
+        padding: 8px 14px;
+        border-bottom: 1px solid rgba(30, 36, 54, 0.5);
+      }
+      .translate-table .fr-col {
+        color: var(--blue);
+      }
+      .translate-table .en-col {
+        color: var(--green);
+      }
+      .translate-table .arrow-col {
+        color: var(--text-dim);
+        text-align: center;
+      }
+      .lesson-example {
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin: 18px 0;
+        font-family: "Fira Code", monospace;
+        font-size: 14px;
+        line-height: 2;
+        position: relative;
+        overflow: hidden;
+      }
+      .lesson-example::before {
+        content: "💻 Exemple";
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: var(--panel2);
+        color: var(--text-dim);
+        font-family: "Fredoka", sans-serif;
+        font-size: 10px;
+        padding: 4px 12px;
+        border-radius: 0 12px 0 8px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .ex-comment {
+        color: var(--text-dim);
+      }
+      .ex-keyword {
+        color: var(--purple);
+      }
+      .ex-string {
+        color: var(--orange);
+      }
+      .ex-func {
+        color: var(--blue);
+      }
+      .ex-number {
+        color: var(--yellow);
+      }
+      .ex-result {
+        color: var(--green);
+      }
+      .fun-box {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        background: rgba(255, 140, 66, 0.06);
+        border: 1px solid rgba(255, 140, 66, 0.15);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 16px 0;
+        font-size: 14px;
+        line-height: 1.65;
+      }
+      .fun-box .fun-icon {
+        font-size: 24px;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .fun-box strong {
+        color: var(--yellow);
+      }
+      .lesson-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+      }
+      .lesson-dots {
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--border);
+        transition: all 0.3s;
+      }
+      .dot.active {
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green-glow);
+      }
+      .dot.done {
+        background: var(--text-dim);
+      }
+      .btn {
+        font-family: "Fredoka", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-primary {
+        background: var(--green);
+        color: #000;
+        box-shadow: 0 3px 16px var(--green-glow);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px var(--green-glow);
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--text-dim);
+        border: 1px solid var(--border);
+      }
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .btn-orange {
+        background: var(--orange);
+        color: #000;
+        box-shadow: 0 3px 16px rgba(255, 140, 66, 0.3);
+      }
+      .btn-orange:hover {
+        transform: translateY(-2px);
+      }
+      .btn-small {
+        padding: 8px 18px;
+        font-size: 12px;
+        border-radius: 8px;
+      }
+      .challenge-screen {
+        padding-top: 24px;
+        animation: fadeUp 0.4s ease;
+      }
+      .challenge-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .challenge-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .challenge-badges {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .challenge-label {
+        font-size: 11px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        background: rgba(255, 77, 106, 0.12);
+        color: var(--red);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+      .challenge-mission {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .challenge-mission code {
+        background: var(--code-bg);
+        color: var(--green);
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-family: "Fira Code", monospace;
+        font-size: 12px;
+        border: 1px solid var(--border);
+      }
+      .editor-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .editor-box,
+      .output-box {
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .pane-tab {
+        padding: 8px 16px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--text-dim);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .pane-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+      }
+      .pane-dot.out {
+        background: var(--blue);
+      }
+      textarea#code-input {
+        flex: 1;
+        min-height: 200px;
+        background: transparent;
+        color: var(--green);
+        border: none;
+        padding: 16px 18px;
+        font-family: "Fira Code", monospace;
+        font-size: 13px;
+        line-height: 1.9;
+        resize: none;
+        outline: none;
+        tab-size: 2;
+      }
+      textarea#code-input::placeholder {
+        color: var(--text-dim);
+      }
+      #output {
+        flex: 1;
+        min-height: 200px;
+        padding: 16px 18px;
+        font-family: "Fira Code", monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text-dim);
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+      .editor-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .actions-left,
+      .actions-right {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .hint-reveal {
+        background: rgba(255, 140, 66, 0.06);
+        border: 1px solid rgba(255, 140, 66, 0.15);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin: 12px 0;
+        font-family: "Fira Code", monospace;
+        font-size: 12px;
+        line-height: 1.9;
+        color: var(--orange);
+        animation: fadeUp 0.3s ease;
+      }
+      .success-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 100;
+        justify-content: center;
+        align-items: center;
+      }
+      .success-overlay.show {
+        display: flex;
+      }
+      .success-card {
+        background: var(--panel);
+        border: 2px solid var(--green);
+        border-radius: 20px;
+        padding: 40px 48px;
+        text-align: center;
+        box-shadow: 0 0 80px var(--green-glow);
+        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-width: 440px;
+      }
+      .success-emoji {
+        font-size: 56px;
+        margin-bottom: 12px;
+      }
+      .success-card h2 {
+        font-size: 24px;
+        color: var(--green);
+        margin-bottom: 6px;
+      }
+      .success-xp {
+        font-size: 18px;
+        color: var(--yellow);
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+      .success-card p {
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--text);
+        margin-bottom: 24px;
+      }
+      .progress-strip {
+        height: 4px;
+        background: var(--border);
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--green), var(--blue));
+        transition: width 0.6s ease;
+      }
+      .map-screen {
+        padding-top: 30px;
+        animation: fadeUp 0.4s ease;
+      }
+      .map-screen h2 {
+        font-size: 22px;
+        color: #fff;
+        margin-bottom: 6px;
+      }
+      .map-screen .map-sub {
+        font-size: 14px;
+        color: var(--text-dim);
+        margin-bottom: 20px;
+      }
+      .map-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 14px;
+      }
+      .map-card {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .map-card:hover:not(.locked) {
+        border-color: var(--green);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px var(--green-glow);
+      }
+      .map-card.locked {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .map-card.completed {
+        border-color: rgba(34, 214, 138, 0.3);
+      }
+      .map-card.completed::after {
+        content: "✓";
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        background: var(--green);
+        color: #000;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .map-card .mc-num {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--green);
+        opacity: 0.3;
+        position: absolute;
+        top: 10px;
+        right: 14px;
+      }
+      .map-card.completed .mc-num {
+        display: none;
+      }
+      .map-card .mc-chapter {
+        font-size: 10px;
+        color: var(--purple);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 6px;
+      }
+      .map-card .mc-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 4px;
+      }
+      .map-card .mc-concept {
+        font-size: 11px;
+        color: var(--text-dim);
+      }
+      .map-card .mc-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+      }
+      .map-card .mc-xp {
+        font-size: 11px;
+        color: var(--yellow);
+      }
+      .map-card .mc-lang {
+        font-size: 9px;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+      .map-back {
+        margin-bottom: 18px;
+      }
+      @media (max-width: 700px) {
+        .editor-grid {
+          grid-template-columns: 1fr;
+        }
+        .header {
+          flex-direction: column;
+          gap: 8px;
+        }
+        .courses-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo" onclick="goHome()">CODE QUEST</div>
+      <div class="header-right">
+        <span class="streak-text" id="streak"></span>
+        <div class="xp-wrap">
+          <span class="xp-text" id="xp-text">0 XP</span>
+          <div class="xp-bar">
+            <div class="xp-fill" id="xp-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        <span class="badge" id="badge">Niv. 1</span>
+        <span class="lang-badge lang-fr" id="lang-badge">🇫🇷 Français</span>
+      </div>
+    </div>
+    <div class="progress-strip">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+    <div class="container" id="app"></div>
+
+    <div class="success-overlay" id="success-overlay">
+      <div class="success-card">
+        <div class="success-emoji" id="success-emoji">🎉</div>
+        <h2 id="success-title">Bravo !</h2>
+        <div class="success-xp" id="success-xp">+50 XP</div>
+        <p id="success-msg"></p>
+        <button class="btn btn-primary" onclick="closeSuccess()">
+          Continuer →
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 📚 COURSE DATA — 3 tracks
+      // ============================================================
+
+      const COURSES = {
+        bases: {
+          id: "bases",
+          icon: "🧩",
+          title: "Les bases du code",
+          desc: "Variables, conditions, boucles, fonctions — les fondations universelles de la programmation.",
+          tag: "Débutant",
+          tagCls: "cc-tag-green",
+          levels: [
+            // 🇫🇷 FRANÇAIS
+            {
+              chapter: "Les Variables",
+              title: "C'est quoi une variable ?",
+              concept: "variable · affectation",
+              xp: 40,
+              lang: "fr",
+              lesson: [
+                {
+                  robot:
+                    "Salut, moi c'est <strong>Nono, le petit robot</strong> 🤖 ! Je suis ton guide pour apprendre à coder. On va commencer par un truc <em>super important</em> : les <strong>variables</strong>.",
+                  funBox: {
+                    icon: "📦",
+                    text: "Imagine une <strong>boîte</strong> avec une étiquette. Tu peux mettre ce que tu veux dedans : un nombre, un mot, une phrase... C'est ça une variable ! L'étiquette = le nom. Le contenu = la valeur.",
+                  },
+                },
+                {
+                  robot:
+                    "Pour créer une variable, c'est facile. Tu choisis un <strong>nom</strong>, tu mets le signe <strong>=</strong>, puis la <strong>valeur</strong>.",
+                  example: [
+                    {
+                      type: "comment",
+                      text: '// Je crée une boîte "age" et je mets 15 dedans',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">age</span> = <span class="ex-number">15</span>',
+                    },
+                    { type: "br" },
+                    {
+                      type: "comment",
+                      text: '// Une boîte "pseudo" avec du texte',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">pseudo</span> = <span class="ex-string">"DragonSlayer42"</span>',
+                    },
+                  ],
+                },
+                {
+                  robot:
+                    "Pour <strong>voir</strong> ce qu'il y a dans une variable, utilise <span class='highlight'>afficher()</span>. C'est comme ouvrir la boîte !",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">pseudo</span> = <span class="ex-string">"DragonSlayer42"</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-func">afficher</span>(pseudo)',
+                    },
+                    { type: "br" },
+                    { type: "result", text: "→ DragonSlayer42" },
+                  ],
+                  funBox: {
+                    icon: "🎮",
+                    text: "Dans un jeu vidéo, les variables stockent <strong>tout</strong> : ta vie, ton score, ton pseudo... Sans elles, rien ne fonctionnerait !",
+                  },
+                },
+              ],
+              challengeDesc: `Crée une variable <code>nom</code> avec ton prénom, puis affiche-la avec <code>afficher(nom)</code>.`,
+              startCode: "// Crée ta variable\n\n\n// Affiche-la\n",
+              hint: 'nom = "TonPrenom"\nafficher(nom)',
+              check(o, c) {
+                return (
+                  c.includes("nom") &&
+                  c.includes("=") &&
+                  c.includes("afficher") &&
+                  o.trim().length > 0 &&
+                  !o.startsWith("❌")
+                );
+              },
+              successEmoji: "🎉",
+              successMsg: "Tu viens de créer ta première variable !",
+            },
+            {
+              chapter: "Les Variables",
+              title: "Calculer avec des variables",
+              concept: "nombres · opérations",
+              xp: 45,
+              lang: "fr",
+              lesson: [
+                {
+                  robot:
+                    "Les variables peuvent contenir des <strong>nombres</strong> et on peut faire des <em>calculs</em> avec !",
+                  funBox: {
+                    icon: "🧮",
+                    text: "Un ordinateur = une <strong>super calculatrice</strong> : des millions de calculs par seconde !",
+                  },
+                },
+                {
+                  robot:
+                    "Utilise <strong>+</strong> <strong>-</strong> <strong>*</strong> <strong>/</strong> et stocke le résultat dans une variable !",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">prix</span> = <span class="ex-number">25</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">quantite</span> = <span class="ex-number">3</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">total</span> = prix * quantite',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-func">afficher</span>(total)',
+                    },
+                    { type: "br" },
+                    { type: "result", text: "→ 75" },
+                  ],
+                },
+              ],
+              challengeDesc: `Crée <code>a</code> et <code>b</code> avec des nombres, puis <code>somme = a + b</code>. Affiche le résultat.`,
+              startCode:
+                "// Tes deux nombres\n\n\n// La somme\n\n\n// Affiche\n",
+              hint: "a = 10\nb = 25\nsomme = a + b\nafficher(somme)",
+              check(o, c) {
+                return (
+                  c.includes("somme") &&
+                  c.includes("+") &&
+                  /\d+/.test(o) &&
+                  !o.startsWith("❌")
+                );
+              },
+              successEmoji: "🔢",
+              successMsg: "Tu sais faire des calculs !",
+            },
+            {
+              chapter: "Les Conditions",
+              title: "Si... alors... sinon...",
+              concept: "si · sinon · comparaisons",
+              xp: 55,
+              lang: "fr",
+              lesson: [
+                {
+                  robot:
+                    "Jusqu'ici, ton code s'exécute toujours pareil. Mais dans la vraie vie, on fait des <strong>choix</strong> ! <em>\"S'il pleut → parapluie. Sinon → lunettes.\"</em>",
+                  funBox: {
+                    icon: "🧠",
+                    text: "Une <strong>condition</strong> permet au programme de <strong>choisir</strong> quoi faire. C'est comme un aiguillage de train !",
+                  },
+                },
+                {
+                  robot:
+                    "On utilise <span class='highlight'>si</span> et <span class='highlight'>sinon</span>. Le programme teste si quelque chose est <strong>vrai</strong>.",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">temperature</span> = <span class="ex-number">35</span>',
+                    },
+                    { type: "br" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">si</span> (temperature > 30) {',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">afficher</span>(<span class="ex-string">"Il fait chaud ! 🥵"</span>)',
+                    },
+                    {
+                      type: "code",
+                      text: '} <span class="ex-keyword">sinon</span> {',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">afficher</span>(<span class="ex-string">"Ça va 😎"</span>)',
+                    },
+                    { type: "code", text: "}" },
+                    { type: "br" },
+                    { type: "result", text: "→ Il fait chaud ! 🥵" },
+                  ],
+                },
+                {
+                  robot:
+                    "Comparaisons disponibles :<br><br>• <span class='highlight'>></span> plus grand<br>• <span class='highlight'><</span> plus petit<br>• <span class='highlight'>>=</span> plus grand ou égal<br>• <span class='highlight'><=</span> plus petit ou égal<br>• <span class='highlight'>==</span> égal à",
+                  funBox: {
+                    icon: "🎮",
+                    text: 'Dans un jeu : <em>"si vie <= 0, game over"</em>. Les conditions sont PARTOUT !',
+                  },
+                },
+              ],
+              challengeDesc: `Crée <code>age</code>. Utilise <code>si (age >= 18)</code> pour afficher <code>"Majeur"</code>, sinon <code>"Mineur"</code>.`,
+              startCode: "// Ton âge\n\n\n// La condition\n\n",
+              hint: 'age = 20\nsi (age >= 18) {\n  afficher("Majeur")\n} sinon {\n  afficher("Mineur")\n}',
+              check(o, c) {
+                return (
+                  c.includes("si") &&
+                  (c.includes(">=") || c.includes(">")) &&
+                  (o.includes("Majeur") || o.includes("Mineur"))
+                );
+              },
+              successEmoji: "🧠",
+              successMsg: "Ton programme sait prendre des décisions !",
+            },
+            {
+              chapter: "Les Boucles",
+              title: "Répéter, c'est gagner",
+              concept: "boucle · répéter",
+              xp: 55,
+              lang: "fr",
+              lesson: [
+                {
+                  robot:
+                    "Écrire les nombres de 1 à 100 ? Pas question de faire 100 lignes ! 😅 Les <strong>boucles</strong> font ça pour toi.",
+                  funBox: {
+                    icon: "🔄",
+                    text: 'Une boucle = "<strong>répète ce code</strong> X fois". LE super-pouvoir de la programmation !',
+                  },
+                },
+                {
+                  robot:
+                    "La boucle <span class='highlight'>répéter</span> : tu donnes un début et une fin.",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">répéter</span> i <span class="ex-keyword">de</span> <span class="ex-number">1</span> <span class="ex-keyword">à</span> <span class="ex-number">5</span> {',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">afficher</span>(i)',
+                    },
+                    { type: "code", text: "}" },
+                    { type: "br" },
+                    { type: "result", text: "→ 1\n→ 2\n→ 3\n→ 4\n→ 5" },
+                  ],
+                  funBox: {
+                    icon: "🤯",
+                    text: "<strong>i</strong> change automatiquement : 1, puis 2, puis 3... Magique !",
+                  },
+                },
+              ],
+              challengeDesc: `Utilise <code>répéter i de 1 à 5</code> pour afficher les nombres de 1 à 5.`,
+              startCode: "// Ta boucle ici\n\n",
+              hint: "répéter i de 1 à 5 {\n  afficher(i)\n}",
+              check(o) {
+                return (
+                  o.includes("1") &&
+                  o.includes("2") &&
+                  o.includes("3") &&
+                  o.includes("4") &&
+                  o.includes("5")
+                );
+              },
+              successEmoji: "🔄",
+              successMsg: "Tu maîtrises les boucles !",
+            },
+            {
+              chapter: "Les Fonctions",
+              title: "Crée tes propres commandes",
+              concept: "fonction · paramètre",
+              xp: 65,
+              lang: "fr",
+              lesson: [
+                {
+                  robot:
+                    "Tu connais <span class='highlight'>afficher()</span> — c'est une <strong>fonction</strong> ! Mais tu peux <em>créer les tiennes</em> ! 🎉",
+                  funBox: {
+                    icon: "🏭",
+                    text: "Une fonction = une <strong>machine</strong>. Tu mets un ingrédient, elle fait un travail.",
+                  },
+                },
+                {
+                  robot:
+                    "On utilise <span class='highlight'>fonction</span> + un nom + des paramètres.",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">fonction</span> <span class="ex-func">saluer</span>(prenom) {',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">afficher</span>(<span class="ex-string">"Salut, "</span> + prenom + <span class="ex-string">" !"</span>)',
+                    },
+                    { type: "code", text: "}" },
+                    { type: "br" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-func">saluer</span>(<span class="ex-string">"Alice"</span>)',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-func">saluer</span>(<span class="ex-string">"Bob"</span>)',
+                    },
+                    { type: "br" },
+                    {
+                      type: "result",
+                      text: "→ Salut, Alice !\n→ Salut, Bob !",
+                    },
+                  ],
+                  funBox: {
+                    icon: "♻️",
+                    text: "Principe <strong>DRY</strong> : Don't Repeat Yourself !",
+                  },
+                },
+              ],
+              challengeDesc: `Crée <code>saluer(prenom)</code> qui affiche <code>"Salut, [prenom] !"</code>. Appelle-la 2 fois.`,
+              startCode: "// Crée ta fonction\n\n\n\n// Appelle-la 2 fois\n\n",
+              hint: 'fonction saluer(prenom) {\n  afficher("Salut, " + prenom + " !")\n}\nsaluer("Alice")\nsaluer("Bob")',
+              check(o, c) {
+                return (
+                  c.includes("fonction") &&
+                  o.split("\n").filter((l) => l.toLowerCase().includes("salut"))
+                    .length >= 2
+                );
+              },
+              successEmoji: "🏭",
+              successMsg: "Tu sais créer des fonctions !",
+            },
+            // 🇫🇷🇬🇧 TRANSITION
+            {
+              chapter: "Transition → Anglais",
+              title: "Les vrais mots du code",
+              concept: "traduction FR → EN",
+              xp: 50,
+              lang: "mix",
+              lesson: [
+                {
+                  robot:
+                    "Bravo ! 🎉 <strong>Petit secret</strong> : en VRAIE programmation, les mots-clés sont en <em>anglais</em>. Un développeur japonais ou français utilise les <strong>mêmes mots</strong>.",
+                  funBox: {
+                    icon: "🌍",
+                    text: "L'anglais en code, c'est comme les notes de musique : <strong>universel</strong>. <strong>if</strong>, <strong>for</strong>, <strong>function</strong> fonctionnent partout !",
+                  },
+                },
+                {
+                  robot:
+                    "Tu connais les concepts, il suffit de changer quelques mots :",
+                  table: [
+                    ["afficher()", "console.log()", "Afficher"],
+                    ["si", "if", "Si"],
+                    ["sinon", "else", "Sinon"],
+                    ["sinon si", "else if", "Sinon si"],
+                    [
+                      "répéter i de 1 à 5",
+                      "for (let i = 1; i <= 5; i++)",
+                      "Boucle",
+                    ],
+                    ["fonction", "function", "Fonction"],
+                    ["retourner", "return", "Retourner"],
+                  ],
+                },
+                {
+                  robot:
+                    "Pour cette <strong>transition</strong>, le français ET l'anglais fonctionnent ! Nono comprend tout. 😎",
+                  funBox: {
+                    icon: "💡",
+                    text: "<span class='highlight'>console.log()</span> = \"affiche dans la console\". C'est le <span class='highlight'>afficher()</span> de JavaScript !",
+                  },
+                },
+              ],
+              challengeDesc: `Essaie en anglais : <code>console.log(nom)</code> au lieu de <code>afficher(nom)</code>. Les deux fonctionnent !`,
+              startCode: "// Les deux marchent !\n\n\n",
+              hint: 'nom = "TonPrenom"\nconsole.log(nom)',
+              check(o, c) {
+                return (
+                  c.includes("nom") &&
+                  c.includes("=") &&
+                  (c.includes("console.log") || c.includes("afficher")) &&
+                  o.trim().length > 0 &&
+                  !o.startsWith("❌")
+                );
+              },
+              successEmoji: "🌍",
+              successMsg: "Tu écris du vrai code universel !",
+            },
+            {
+              chapter: "Transition → Anglais",
+              title: "if et else",
+              concept: "if · else",
+              xp: 55,
+              lang: "mix",
+              lesson: [
+                {
+                  robot:
+                    "<span class='highlight'>si</span>/<span class='highlight'>sinon</span> → <span class='highlight'>if</span>/<span class='highlight'>else</span>. C'est presque pareil !",
+                  example: [
+                    { type: "comment", text: "// Français :" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">si</span> (age >= 18) { <span class="ex-func">afficher</span>(<span class="ex-string">"Majeur"</span>) }',
+                    },
+                    { type: "br" },
+                    { type: "comment", text: "// Anglais :" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">if</span> (age >= 18) { <span class="ex-func">console.log</span>(<span class="ex-string">"Majeur"</span>) }',
+                    },
+                  ],
+                  funBox: {
+                    icon: "🔄",
+                    text: "<strong>si</strong> → <strong>if</strong><br><strong>sinon</strong> → <strong>else</strong><br>Les { } et comparaisons ne changent pas !",
+                  },
+                },
+              ],
+              challengeDesc: `Crée <code>score</code>. Utilise <code>if/else</code> pour afficher <code>"Gagné"</code> si score >= 50, sinon <code>"Perdu"</code>.`,
+              startCode: "// Ton score\n\n\n// En anglais !\n\n",
+              hint: 'score = 75\nif (score >= 50) {\n  console.log("Gagné")\n} else {\n  console.log("Perdu")\n}',
+              check(o, c) {
+                return (
+                  (c.includes("if") || c.includes("si")) &&
+                  (o.includes("Gagn") || o.includes("Perdu"))
+                );
+              },
+              successEmoji: "🇬🇧",
+              successMsg: "if/else c'est dans la poche !",
+            },
+            {
+              chapter: "Transition → Anglais",
+              title: "La boucle for",
+              concept: "for · let · i++",
+              xp: 60,
+              lang: "mix",
+              lesson: [
+                {
+                  robot:
+                    "La boucle <span class='highlight'>for</span> a 3 parties :<br>1. <strong>Début</strong> : <span class='highlight'>let i = 1</span><br>2. <strong>Condition</strong> : <span class='highlight'>i <= 5</span><br>3. <strong>Pas</strong> : <span class='highlight'>i++</span> (= i + 1)",
+                  example: [
+                    { type: "comment", text: "// Français :" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">répéter</span> i <span class="ex-keyword">de</span> <span class="ex-number">1</span> <span class="ex-keyword">à</span> <span class="ex-number">5</span> { ... }',
+                    },
+                    { type: "br" },
+                    { type: "comment", text: "// Anglais :" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">for</span> (<span class="ex-keyword">let</span> i = <span class="ex-number">1</span>; i <= <span class="ex-number">5</span>; i++) { ... }',
+                    },
+                  ],
+                  funBox: {
+                    icon: "🧩",
+                    text: '<strong>let</strong> = "je crée une variable"<br><strong>i++</strong> = raccourci pour "i = i + 1"',
+                  },
+                },
+              ],
+              challengeDesc: `Affiche 1 à 5 avec <code>for (let i = 1; i <= 5; i++)</code> et <code>console.log(i)</code>.`,
+              startCode: "// Ta boucle for\n\n",
+              hint: "for (let i = 1; i <= 5; i++) {\n  console.log(i)\n}",
+              check(o) {
+                return (
+                  o.includes("1") &&
+                  o.includes("2") &&
+                  o.includes("3") &&
+                  o.includes("4") &&
+                  o.includes("5")
+                );
+              },
+              successEmoji: "🔁",
+              successMsg: "Tu sais écrire une boucle for !",
+            },
+            // 🇬🇧 VRAI CODE
+            {
+              chapter: "Vrai Code",
+              title: "100% JavaScript",
+              concept: "function · return",
+              xp: 70,
+              lang: "en",
+              lesson: [
+                {
+                  robot:
+                    "Tu es prêt pour le <strong>vrai code</strong> ! 🚀 En <em>JavaScript</em> — le langage n°1 du web.",
+                  funBox: {
+                    icon: "🌐",
+                    text: "JavaScript fait tourner <strong>95% des sites web</strong> : YouTube, Instagram, Netflix...",
+                  },
+                },
+                {
+                  robot: "Récapitulatif :",
+                  table: [
+                    ["afficher()", "console.log()", ""],
+                    [" si / sinon", "if / else", ""],
+                    ["répéter i de 1 à 5", "for (let i = 1; i <= 5; i++)", ""],
+                    ["fonction", "function", ""],
+                    ["retourner", "return", ""],
+                  ],
+                },
+                {
+                  robot:
+                    "Le français <strong>ne marche plus</strong> ici. C'est le grand saut ! 💪",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">function</span> <span class="ex-func">double</span>(n) {',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-keyword">return</span> n * <span class="ex-number">2</span>',
+                    },
+                    { type: "code", text: "}" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-func">console.log</span>(<span class="ex-func">double</span>(<span class="ex-number">7</span>))',
+                    },
+                    { type: "br" },
+                    { type: "result", text: "→ 14" },
+                  ],
+                },
+              ],
+              challengeDesc: `Crée <code>function double(n)</code> qui retourne <code>n * 2</code>. Affiche <code>double(7)</code> et <code>double(15)</code>.`,
+              startCode: "// En JavaScript !\n\n\n\n// Teste\n\n",
+              hint: "function double(n) {\n  return n * 2\n}\nconsole.log(double(7))\nconsole.log(double(15))",
+              check(o, c) {
+                return (
+                  c.includes("function") &&
+                  c.includes("return") &&
+                  o.includes("14") &&
+                  o.includes("30")
+                );
+              },
+              successEmoji: "🚀",
+              successMsg: "Du VRAI JavaScript !",
+            },
+            {
+              chapter: "Boss Final",
+              title: "FizzBuzz en JavaScript",
+              concept: "tout combiner !",
+              xp: 100,
+              lang: "en",
+              lesson: [
+                {
+                  robot:
+                    "<strong>Boss Final</strong> ! 🐉 Le <strong>FizzBuzz</strong> : un jeu de comptage mythique.",
+                  funBox: {
+                    icon: "🏆",
+                    text: "<strong>FizzBuzz</strong> est demandé en <strong>entretien d'embauche</strong>. Si tu le réussis, tu penses comme un vrai développeur !",
+                  },
+                },
+                {
+                  robot:
+                    'Les règles : on compte de 1 à 15, mais :<br><br>👉 Divisible par <strong>3</strong> → <em>"Fizz"</em><br>👉 Divisible par <strong>5</strong> → <em>"Buzz"</em><br>👉 Divisible par 3 <strong>ET</strong> 5 → <em>"FizzBuzz"</em><br>👉 Sinon → le nombre',
+                  funBox: {
+                    icon: "🎲",
+                    text: "Exemple :<br><strong>1</strong> → 1<br><strong>2</strong> → 2<br><strong>3</strong> → Fizz (÷3)<br><strong>4</strong> → 4<br><strong>5</strong> → Buzz (÷5)<br><strong>6</strong> → Fizz<br><strong>7</strong> → 7",
+                  },
+                },
+                {
+                  robot:
+                    "<span class='highlight'>%</span> (modulo) = le <strong>reste</strong> de la division.<br><br>• <span class='highlight'>6 % 3</span> = 0 → divisible ✅<br>• <span class='highlight'>7 % 3</span> = 1 → non ❌<br><br>Donc <span class='highlight'>if (i % 3 === 0)</span> = \"si i divisible par 3\".",
+                  funBox: {
+                    icon: "⚠️",
+                    text: "<strong>Piège :</strong> teste <strong>15 d'abord</strong> (÷3 ET ÷5), AVANT de tester 3 ou 5 seuls !",
+                  },
+                },
+                {
+                  robot: "Structure du code :",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">for</span> (<span class="ex-keyword">let</span> i = <span class="ex-number">1</span>; i <= <span class="ex-number">15</span>; i++) {',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-comment">// 1. si divisible par 15 → "FizzBuzz"</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-comment">// 2. sinon si ÷3 → "Fizz"</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-comment">// 3. sinon si ÷5 → "Buzz"</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-comment">// 4. sinon → le nombre</span>',
+                    },
+                    { type: "code", text: "}" },
+                    { type: "br" },
+                    {
+                      type: "result",
+                      text: "→ 1\n→ 2\n→ Fizz\n→ 4\n→ Buzz\n→ Fizz\n→ 7\n→ 8\n→ Fizz\n→ Buzz\n→ 11\n→ Fizz\n→ 13\n→ 14\n→ FizzBuzz",
+                    },
+                  ],
+                },
+              ],
+              challengeDesc: `Compte de 1 à 15 :<br>• ÷3 et ÷5 → <code>"FizzBuzz"</code><br>• ÷3 → <code>"Fizz"</code><br>• ÷5 → <code>"Buzz"</code><br>• Sinon → le nombre<br><br>💡 <code>i % 3 === 0</code> = "i divisible par 3"`,
+              startCode:
+                "for (let i = 1; i <= 15; i++) {\n  // Tes conditions ici\n  \n}\n",
+              hint: 'for (let i = 1; i <= 15; i++) {\n  if (i % 15 === 0) {\n    console.log("FizzBuzz")\n  } else if (i % 3 === 0) {\n    console.log("Fizz")\n  } else if (i % 5 === 0) {\n    console.log("Buzz")\n  } else {\n    console.log(i)\n  }\n}',
+              check(o) {
+                const l = o
+                  .trim()
+                  .split("\n")
+                  .map((x) => x.trim());
+                return (
+                  l.includes("1") &&
+                  l.includes("Fizz") &&
+                  l.includes("Buzz") &&
+                  l.includes("FizzBuzz")
+                );
+              },
+              successEmoji: "🏆",
+              successMsg:
+                "LÉGENDAIRE ! FizzBuzz en pur JavaScript ! Tu maîtrises les bases du code !",
+            },
+          ],
+        },
+
+        html: {
+          id: "html",
+          icon: "🌐",
+          title: "HTML & CSS",
+          desc: "Apprends à créer des pages web : structure, texte, couleurs, mise en page.",
+          tag: "Bientôt",
+          tagCls: "cc-tag-orange",
+          soon: true,
+          levels: [],
+        },
+
+        python: {
+          id: "python",
+          icon: "🐍",
+          title: "Python",
+          desc: "Le langage le plus populaire pour l'IA, la data science et l'automatisation.",
+          tag: "Bientôt",
+          tagCls: "cc-tag-blue",
+          soon: true,
+          levels: [],
+        },
+      };
+
+      // ============================================================
+      // 🔧 INTERPRETER
+      // ============================================================
+      function interpret(code, lang) {
+        let output = [];
+        let js = code;
+        js = js.replace(/console\.log\(/g, "__print(");
+        if (lang !== "en") {
+          js = js.replace(/afficher\(/g, "__print(");
+          js = js.replace(/fonction\s+(\w+)\s*\(/g, "function $1(");
+          js = js.replace(/retourner\b/g, "return");
+          js = js.replace(
+            /répéter\s+(\w+)\s+de\s+(\S+)\s+à\s+(\S+)\s*\{/g,
+            (m, v, f, t) => {
+              const fn = parseInt(f),
+                tn = parseInt(t);
+              if (!isNaN(fn) && !isNaN(tn) && fn > tn)
+                return `for(let ${v}=${f};${v}>=${t};${v}--){`;
+              return `for(let ${v}=${f};${v}<=${t};${v}++){`;
+            },
+          );
+          js = js.replace(/\bsi\s*\(/g, "if(");
+          js = js.replace(/sinon\s+si\s*\(/g, "else if(");
+          js = js.replace(/\bsinon\s*\{/g, "else{");
+        }
+        js = js.replace(/([^=!<>])={2}([^=])/g, "$1===$2");
+        js = js
+          .split("\n")
+          .map((l) => {
+            const ci = l.indexOf("//");
+            if (ci >= 0) {
+              const b = l.substring(0, ci);
+              if (
+                (b.match(/'/g) || []).length % 2 === 0 &&
+                (b.match(/"/g) || []).length % 2 === 0
+              )
+                return l.substring(0, ci);
+            }
+            return l;
+          })
+          .join("\n");
+        const __print = function () {
+          output.push(
+            Array.from(arguments)
+              .map((a) =>
+                a === undefined ? "undefined" : a === null ? "null" : String(a),
+              )
+              .join(" "),
+          );
+        };
+        try {
+          new Function("__print", js)(__print);
+        } catch (err) {
+          let msg = err.message;
+          if (
+            lang === "en" &&
+            (msg.includes("afficher") ||
+              msg.includes("fonction") ||
+              msg.includes("répéter") ||
+              msg.includes("sinon"))
+          )
+            msg +=
+              "\n💡 Ce niveau est en anglais ! Utilise if/else, for, function, console.log()";
+          msg = msg
+            .replace("is not defined", "n'est pas défini(e)")
+            .replace("is not a function", "n'est pas une fonction")
+            .replace("Unexpected token", "Symbole inattendu")
+            .replace(
+              "Unexpected end of input",
+              "Code incomplet (} manquant ?)",
+            );
+          output.push("❌ Erreur : " + msg);
+        }
+        return output.join("\n");
+      }
+
+      // ============================================================
+      // 🎮 GAME STATE
+      // ============================================================
+      let currentCourse = null; // 'bases', 'html', 'python'
+      let currentLevel = 0,
+        lessonPage = 0;
+      let phase = "welcome"; // 'welcome', 'map', 'lesson', 'challenge'
+      let xp = 0,
+        completed = {},
+        hintVisible = false,
+        consecutiveWins = 0;
+
+      function getCompleted(courseId) {
+        return completed[courseId] || new Set();
+      }
+      function setCompleted(courseId, i) {
+        if (!completed[courseId]) completed[courseId] = new Set();
+        completed[courseId].add(i);
+      }
+      function getLevels() {
+        return COURSES[currentCourse]?.levels || [];
+      }
+      function getLangInfo(l) {
+        if (l === "fr") return { label: "🇫🇷 Français", cls: "lang-fr" };
+        if (l === "mix") return { label: "🇫🇷🇬🇧 Bilingue", cls: "lang-mix" };
+        return { label: "🇬🇧 JavaScript", cls: "lang-en" };
+      }
+
+      function render() {
+        const app = document.getElementById("app");
+        if (phase === "welcome") renderWelcome(app);
+        else if (phase === "map") renderMap(app);
+        else if (phase === "lesson") renderLesson(app);
+        else if (phase === "challenge") renderChallenge(app);
+        updateHeader();
+      }
+
+      function goHome() {
+        phase = "welcome";
+        currentCourse = null;
+        render();
+      }
+
+      // ======== WELCOME ========
+      function renderWelcome(app) {
+        const basesCompleted = getCompleted("bases").size;
+        const basesTotal = COURSES.bases.levels.length;
+        const basesPct =
+          basesTotal > 0 ? Math.round((basesCompleted / basesTotal) * 100) : 0;
+
+        app.innerHTML = `<div class="welcome">
+    <div class="welcome-robot">🤖</div>
+    <h1>Bienvenue sur <span>CODE QUEST</span></h1>
+    <div class="welcome-sub">Le jeu qui t'apprend à coder, étape par étape, en t'amusant. Créé par Shizou</div>
+
+    <div class="welcome-intro">
+      <div class="robot-mini">
+        <div class="robot-face">🤖</div>
+        <div class="robot-text">
+          Salut, c'est moi <strong>Nono, le petit robot l'ami de Shizou</strong> ! 
+          Je vais t'accompagner dans ton aventure pour apprendre à programmer. 
+          Pas besoin de connaissances, on part de <em>zéro</em>. 
+          Choisis un parcours ci-dessous et c'est parti ! 🚀
+        </div>
+      </div>
+    </div>
+
+    <div class="courses-grid">
+      <div class="course-card" onclick="selectCourse('bases')">
+        <span class="cc-icon">🧩</span>
+        <div class="cc-title">Les bases du code</div>
+        <div class="cc-desc">Variables, conditions, boucles, fonctions — les fondations universelles de la programmation. Tu passes du français au vrai code JavaScript.</div>
+        <span class="cc-tag cc-tag-green">Commencer ici</span>
+        ${basesTotal > 0 ? `<div class="cc-progress"><div class="cc-progress-fill" style="width:${basesPct}%"></div></div><div class="cc-progress-text">${basesCompleted}/${basesTotal} missions</div>` : ""}
+      </div>
+      <div class="course-card locked">
+        <span class="cc-soon">Bientôt</span>
+        <span class="cc-icon">🌐</span>
+        <div class="cc-title">HTML & CSS</div>
+        <div class="cc-desc">Apprends à créer tes propres pages web : structure, texte, couleurs, images, mise en page.</div>
+        <span class="cc-tag cc-tag-orange">Prochainement</span>
+      </div>
+      <div class="course-card locked">
+        <span class="cc-soon">Bientôt</span>
+        <span class="cc-icon">🐍</span>
+        <div class="cc-title">Python</div>
+        <div class="cc-desc">Le langage le plus populaire pour l'IA, la data science et l'automatisation.</div>
+        <span class="cc-tag cc-tag-blue">Prochainement</span>
+      </div>
+    </div>
+  </div>`;
+      }
+
+      function selectCourse(id) {
+        if (COURSES[id].soon) return;
+        currentCourse = id;
+        currentLevel = 0;
+        lessonPage = 0;
+        phase = "map";
+        render();
+      }
+
+      // ======== MAP ========
+      function renderMap(app) {
+        const course = COURSES[currentCourse];
+        const comp = getCompleted(currentCourse);
+        let html = `<div class="map-screen">
+    <div class="map-back"><button class="btn btn-secondary btn-small" onclick="goHome()">← Parcours</button></div>
+    <h2>${course.icon} ${course.title}</h2>
+    <div class="map-sub">${course.desc}</div>
+    <div class="map-grid">`;
+        course.levels.forEach((lvl, i) => {
+          const done = comp.has(i);
+          const locked = i > 0 && !comp.has(i - 1) && !done;
+          const cls = done ? "completed" : locked ? "locked" : "";
+          const li = getLangInfo(lvl.lang);
+          html += `<div class="map-card ${cls}" onclick="${locked ? "" : `selectLevel(${i})`}">
+      <div class="mc-num">${i + 1}</div>
+      <div class="mc-chapter">${lvl.chapter}</div>
+      <div class="mc-title">${lvl.title}</div>
+      <div class="mc-concept">${lvl.concept}</div>
+      <div class="mc-bottom"><span class="mc-xp">⭐ ${lvl.xp} XP</span><span class="mc-lang ${li.cls}">${li.label}</span></div>
+    </div>`;
+        });
+        html += "</div></div>";
+        app.innerHTML = html;
+      }
+
+      function selectLevel(i) {
+        currentLevel = i;
+        lessonPage = 0;
+        hintVisible = false;
+        phase = "lesson";
+        render();
+      }
+
+      // ======== LESSON ========
+      function renderLesson(app) {
+        const lvl = getLevels()[currentLevel];
+        const page = lvl.lesson[lessonPage];
+        const total = lvl.lesson.length;
+        const li = getLangInfo(lvl.lang);
+        let html = `<div class="lesson-screen">
+    <div><div class="lesson-chapter">${lvl.chapter} — Mission ${currentLevel + 1}/${getLevels().length}</div>
+    <div class="lesson-title">${lvl.title}</div>
+    <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+      <span class="lesson-badge">${lvl.concept}</span>
+      <span class="lesson-badge ${li.cls}" style="background:none;border:1px solid">${li.label}</span>
+    </div></div>
+    <div class="robot-bubble"><div class="robot-avatar">🤖</div><div class="bubble">${page.robot}</div></div>`;
+        if (page.table) {
+          html += `<table class="translate-table"><tr><th>🇫🇷 Français</th><th></th><th>🇬🇧 Anglais</th></tr>`;
+          page.table.forEach((r) => {
+            html += `<tr><td class="fr-col">${r[0]}</td><td class="arrow-col">→</td><td class="en-col">${r[1]}</td></tr>`;
+          });
+          html += "</table>";
+        }
+        if (page.funBox)
+          html += `<div class="fun-box"><div class="fun-icon">${page.funBox.icon}</div><div>${page.funBox.text}</div></div>`;
+        if (page.example) {
+          html += '<div class="lesson-example">';
+          page.example.forEach((l) => {
+            if (l.type === "br") html += "<br>";
+            else if (l.type === "comment")
+              html += `<div class="ex-comment">${l.text}</div>`;
+            else if (l.type === "result")
+              html += `<div class="ex-result">${l.text.replace(/\n/g, "<br>")}</div>`;
+            else html += `<div>${l.text}</div>`;
+          });
+          html += "</div>";
+        }
+        html += `<div class="lesson-nav">
+    <div>${lessonPage > 0 ? `<button class="btn btn-secondary btn-small" onclick="prevPage()">← Précédent</button>` : `<button class="btn btn-secondary btn-small" onclick="backToMap()">← Carte</button>`}</div>
+    <div class="lesson-dots">${Array.from({ length: total }, (_, i) => `<div class="dot ${i < lessonPage ? "done" : i === lessonPage ? "active" : ""}"></div>`).join("")}</div>
+    <div>${lessonPage < total - 1 ? `<button class="btn btn-primary btn-small" onclick="nextPage()">Suivant →</button>` : `<button class="btn btn-orange btn-small" onclick="startChallenge()">🎯 Relever le défi !</button>`}</div>
+  </div></div>`;
+        app.innerHTML = html;
+      }
+      function nextPage() {
+        lessonPage++;
+        render();
+        window.scrollTo(0, 0);
+      }
+      function prevPage() {
+        lessonPage--;
+        render();
+        window.scrollTo(0, 0);
+      }
+      function backToMap() {
+        phase = "map";
+        render();
+      }
+      function startChallenge() {
+        phase = "challenge";
+        hintVisible = false;
+        render();
+      }
+
+      // ======== CHALLENGE ========
+      function renderChallenge(app) {
+        const lvl = getLevels()[currentLevel];
+        const li = getLangInfo(lvl.lang);
+        let html = `<div class="challenge-screen">
+    <div class="challenge-header"><div class="challenge-title">🎯 Défi : ${lvl.title}</div>
+    <div class="challenge-badges"><span class="lang-badge ${li.cls}">${li.label}</span><span class="challenge-label">⭐ ${lvl.xp} XP</span></div></div>
+    <div class="challenge-mission">${lvl.challengeDesc}</div>`;
+        if (lvl.lang === "en")
+          html += `<div class="fun-box" style="margin-top:0;margin-bottom:12px"><div class="fun-icon">🇬🇧</div><div style="font-size:12px">Ce niveau est en <strong style="color:var(--green)">anglais uniquement</strong>. Utilise <strong>console.log()</strong>, <strong>if/else</strong>, <strong>for</strong>, <strong>function</strong>, <strong>return</strong>.</div></div>`;
+        else if (lvl.lang === "mix")
+          html += `<div class="fun-box" style="margin-top:0;margin-bottom:12px"><div class="fun-icon">🔄</div><div style="font-size:12px">Français et anglais fonctionnent tous les deux !</div></div>`;
+        if (hintVisible)
+          html += `<div class="hint-reveal">💡 <strong>Indice :</strong>\n${lvl.hint}</div>`;
+        html += `<div class="editor-grid">
+    <div class="editor-box"><div class="pane-tab"><div class="pane-dot"></div> Ton code</div><textarea id="code-input" spellcheck="false" placeholder="Écris ton code ici...">${lvl.startCode}</textarea></div>
+    <div class="output-box"><div class="pane-tab"><div class="pane-dot out"></div> Résultat</div><div id="output">Clique sur ▶ Exécuter pour tester...</div></div>
+  </div>
+  <div class="editor-actions">
+    <div class="actions-left"><button class="btn btn-primary" onclick="runCode()">▶ Exécuter</button><button class="btn btn-secondary btn-small" onclick="showHint()">💡 Indice</button><button class="btn btn-secondary btn-small" onclick="resetCode()">↺ Reset</button></div>
+    <div class="actions-right"><button class="btn btn-secondary btn-small" onclick="goBackToLesson()">📖 Revoir le cours</button></div>
+  </div></div>`;
+        app.innerHTML = html;
+        const ta = document.getElementById("code-input");
+        ta.addEventListener("keydown", function (e) {
+          if (e.key === "Tab") {
+            e.preventDefault();
+            const s = this.selectionStart;
+            this.value =
+              this.value.substring(0, s) +
+              "  " +
+              this.value.substring(this.selectionEnd);
+            this.selectionStart = this.selectionEnd = s + 2;
+          }
+          if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            runCode();
+          }
+        });
+      }
+      function goBackToLesson() {
+        phase = "lesson";
+        lessonPage = 0;
+        render();
+      }
+      function showHint() {
+        hintVisible = true;
+        const c = document.getElementById("code-input")?.value;
+        render();
+        if (c) document.getElementById("code-input").value = c;
+      }
+      function resetCode() {
+        const lvl = getLevels()[currentLevel];
+        document.getElementById("code-input").value = lvl.startCode;
+        document.getElementById("output").textContent =
+          "Clique sur ▶ Exécuter pour tester...";
+        document.getElementById("output").style.color = "var(--text-dim)";
+      }
+      function runCode() {
+        const code = document.getElementById("code-input").value;
+        const outEl = document.getElementById("output");
+        const lvl = getLevels()[currentLevel];
+        const result = interpret(code, lvl.lang);
+        outEl.textContent = result || "(rien affiché)";
+        if (result.startsWith("❌")) {
+          outEl.style.color = "var(--red)";
+          return;
+        }
+        outEl.style.color = "var(--green)";
+        if (lvl.check(result, code)) {
+          if (!getCompleted(currentCourse).has(currentLevel)) {
+            setCompleted(currentCourse, currentLevel);
+            xp += lvl.xp;
+            consecutiveWins++;
+          }
+          document.getElementById("success-emoji").textContent =
+            lvl.successEmoji;
+          document.getElementById("success-title").textContent =
+            currentLevel === getLevels().length - 1
+              ? "🏆 PARCOURS TERMINÉ !"
+              : "Bravo !";
+          document.getElementById("success-xp").textContent =
+            "+" + lvl.xp + " XP";
+          document.getElementById("success-msg").textContent = lvl.successMsg;
+          document.getElementById("success-overlay").classList.add("show");
+          updateHeader();
+        }
+      }
+      function closeSuccess() {
+        document.getElementById("success-overlay").classList.remove("show");
+        const levels = getLevels();
+        if (currentLevel < levels.length - 1) {
+          currentLevel++;
+          lessonPage = 0;
+          hintVisible = false;
+          phase = "lesson";
+        } else {
+          phase = "map";
+        }
+        render();
+      }
+      function updateHeader() {
+        const xpPerLvl = 150,
+          level = Math.floor(xp / xpPerLvl) + 1,
+          pct = ((xp % xpPerLvl) / xpPerLvl) * 100;
+        document.getElementById("xp-text").textContent = xp + " XP";
+        document.getElementById("xp-fill").style.width = pct + "%";
+        document.getElementById("badge").textContent = "Niv. " + level;
+        document.getElementById("streak").textContent =
+          consecutiveWins >= 3 ? "🔥 " + consecutiveWins + " d'affilée" : "";
+        const levels = getLevels();
+        const comp = currentCourse ? getCompleted(currentCourse).size : 0;
+        const total = levels.length || 1;
+        document.getElementById("progress-fill").style.width =
+          (comp / total) * 100 + "%";
+        const lb = document.getElementById("lang-badge");
+        if (currentCourse && levels[currentLevel]) {
+          const li = getLangInfo(levels[currentLevel].lang);
+          lb.textContent = li.label;
+          lb.className = "lang-badge " + li.cls;
+        } else {
+          lb.textContent = "🎮 Code Quest";
+          lb.className = "lang-badge lang-fr";
+        }
+      }
+
+      render();
+    </script>
+  </body>
+</html>
