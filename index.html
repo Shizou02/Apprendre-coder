@@ -884,6 +884,49 @@
       .map-back {
         margin-bottom: 18px;
       }
+
+      /* MEMO / FICHE DE COURS */
+      .memo-card {
+        background: var(--panel2);
+        border: 1px solid rgba(79,172,254,0.2);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-top: 16px;
+      }
+      .memo-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--blue);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .memo-header:hover { color: var(--green); }
+      .memo-content {
+        font-family: 'Fira Code', monospace;
+        font-size: 12px;
+        line-height: 2.2;
+        color: var(--text);
+      }
+      .memo-content code {
+        background: var(--code-bg);
+        color: var(--green);
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        font-size: 12px;
+      }
+      .memo-content .memo-desc {
+        color: var(--text-dim);
+        font-family: 'Fredoka', sans-serif;
+        font-size: 12px;
+      }
+
       @media (max-width: 700px) {
         .editor-grid {
           grid-template-columns: 1fr;
@@ -954,7 +997,7 @@
               lesson: [
                 {
                   robot:
-                    "Salut, moi c'est <strong>Nono, le petit robot</strong> 🤖 ! Je suis ton guide pour apprendre à coder. On va commencer par un truc <em>super important</em> : les <strong>variables</strong>.",
+                    "Salut, c'est moi c'est <strong>Nono, le petit robot, l'ami de Shizou</strong> 🤖 ! Je suis ton guide pour apprendre à coder. On va commencer par un truc <em>super important</em> : les <strong>variables</strong>.",
                   funBox: {
                     icon: "📦",
                     text: "Imagine une <strong>boîte</strong> avec une étiquette. Tu peux mettre ce que tu veux dedans : un nombre, un mot, une phrase... C'est ça une variable ! L'étiquette = le nom. Le contenu = la valeur.",
@@ -1007,6 +1050,7 @@
               challengeDesc: `Crée une variable <code>nom</code> avec ton prénom, puis affiche-la avec <code>afficher(nom)</code>.`,
               startCode: "// Crée ta variable\n\n\n// Affiche-la\n",
               hint: 'nom = "TonPrenom"\nafficher(nom)',
+              memo: `<code>nom = "valeur"</code> <span class="memo-desc">→ créer une variable</span><br><code>afficher(nom)</code> <span class="memo-desc">→ afficher le contenu</span>`,
               check(o, c) {
                 return (
                   c.includes("nom") &&
@@ -1063,6 +1107,7 @@
               startCode:
                 "// Tes deux nombres\n\n\n// La somme\n\n\n// Affiche\n",
               hint: "a = 10\nb = 25\nsomme = a + b\nafficher(somme)",
+              memo: `<code>nom = valeur</code> <span class="memo-desc">→ créer une variable</span><br><code>+ - * /</code> <span class="memo-desc">→ addition, soustraction, multiplication, division</span><br><code>afficher(resultat)</code> <span class="memo-desc">→ afficher le résultat</span>`,
               check(o, c) {
                 return (
                   c.includes("somme") &&
@@ -1131,6 +1176,7 @@
               challengeDesc: `Crée <code>age</code>. Utilise <code>si (age >= 18)</code> pour afficher <code>"Majeur"</code>, sinon <code>"Mineur"</code>.`,
               startCode: "// Ton âge\n\n\n// La condition\n\n",
               hint: 'age = 20\nsi (age >= 18) {\n  afficher("Majeur")\n} sinon {\n  afficher("Mineur")\n}',
+              memo: `<code>si (condition) { ... }</code> <span class="memo-desc">→ si c'est vrai, exécute le code</span><br><code>sinon { ... }</code> <span class="memo-desc">→ sinon, exécute ceci</span><br><code>> < >= <= ==</code> <span class="memo-desc">→ comparaisons</span>`,
               check(o, c) {
                 return (
                   c.includes("si") &&
@@ -1181,6 +1227,7 @@
               challengeDesc: `Utilise <code>répéter i de 1 à 5</code> pour afficher les nombres de 1 à 5.`,
               startCode: "// Ta boucle ici\n\n",
               hint: "répéter i de 1 à 5 {\n  afficher(i)\n}",
+              memo: `<code>répéter i de 1 à 5 { ... }</code> <span class="memo-desc">→ répète le code de 1 à 5</span><br><code>afficher(i)</code> <span class="memo-desc">→ affiche le numéro du tour</span>`,
               check(o) {
                 return (
                   o.includes("1") &&
@@ -1245,6 +1292,7 @@
               challengeDesc: `Crée <code>saluer(prenom)</code> qui affiche <code>"Salut, [prenom] !"</code>. Appelle-la 2 fois.`,
               startCode: "// Crée ta fonction\n\n\n\n// Appelle-la 2 fois\n\n",
               hint: 'fonction saluer(prenom) {\n  afficher("Salut, " + prenom + " !")\n}\nsaluer("Alice")\nsaluer("Bob")',
+              memo: `<code>fonction nom(paramètre) { ... }</code> <span class="memo-desc">→ créer une fonction</span><br><code>nom("valeur")</code> <span class="memo-desc">→ appeler la fonction</span><br><code>afficher("texte" + variable)</code> <span class="memo-desc">→ coller du texte</span>`,
               check(o, c) {
                 return (
                   c.includes("fonction") &&
@@ -1300,6 +1348,7 @@
               challengeDesc: `Essaie en anglais : <code>console.log(nom)</code> au lieu de <code>afficher(nom)</code>. Les deux fonctionnent !`,
               startCode: "// Les deux marchent !\n\n\n",
               hint: 'nom = "TonPrenom"\nconsole.log(nom)',
+              memo: `<code>afficher()</code> → <code>console.log()</code><br><code>si / sinon</code> → <code>if / else</code><br><code>répéter i de 1 à 5</code> → <code>for (let i = 1; i <= 5; i++)</code><br><code>fonction</code> → <code>function</code><br><code>retourner</code> → <code>return</code>`,
               check(o, c) {
                 return (
                   c.includes("nom") &&
@@ -1344,6 +1393,7 @@
               challengeDesc: `Crée <code>score</code>. Utilise <code>if/else</code> pour afficher <code>"Gagné"</code> si score >= 50, sinon <code>"Perdu"</code>.`,
               startCode: "// Ton score\n\n\n// En anglais !\n\n",
               hint: 'score = 75\nif (score >= 50) {\n  console.log("Gagné")\n} else {\n  console.log("Perdu")\n}',
+              memo: `<code>if (condition) { ... }</code> <span class="memo-desc">→ si</span><br><code>else { ... }</code> <span class="memo-desc">→ sinon</span><br><code>console.log("texte")</code> <span class="memo-desc">→ afficher</span>`,
               check(o, c) {
                 return (
                   (c.includes("if") || c.includes("si")) &&
@@ -1385,6 +1435,7 @@
               challengeDesc: `Affiche 1 à 5 avec <code>for (let i = 1; i <= 5; i++)</code> et <code>console.log(i)</code>.`,
               startCode: "// Ta boucle for\n\n",
               hint: "for (let i = 1; i <= 5; i++) {\n  console.log(i)\n}",
+              memo: `<code>for (let i = 1; i <= 5; i++) { ... }</code><br><span class="memo-desc">let i = 1 → début | i <= 5 → condition | i++ → ajoute 1</span><br><code>console.log(i)</code> <span class="memo-desc">→ afficher</span>`,
               check(o) {
                 return (
                   o.includes("1") &&
@@ -1448,6 +1499,7 @@
               challengeDesc: `Crée <code>function double(n)</code> qui retourne <code>n * 2</code>. Affiche <code>double(7)</code> et <code>double(15)</code>.`,
               startCode: "// En JavaScript !\n\n\n\n// Teste\n\n",
               hint: "function double(n) {\n  return n * 2\n}\nconsole.log(double(7))\nconsole.log(double(15))",
+              memo: `<code>function nom(param) { ... }</code> <span class="memo-desc">→ créer une fonction</span><br><code>return valeur</code> <span class="memo-desc">→ retourner un résultat</span><br><code>console.log(valeur)</code> <span class="memo-desc">→ afficher</span>`,
               check(o, c) {
                 return (
                   c.includes("function") &&
@@ -1526,6 +1578,7 @@
               startCode:
                 "for (let i = 1; i <= 15; i++) {\n  // Tes conditions ici\n  \n}\n",
               hint: 'for (let i = 1; i <= 15; i++) {\n  if (i % 15 === 0) {\n    console.log("FizzBuzz")\n  } else if (i % 3 === 0) {\n    console.log("Fizz")\n  } else if (i % 5 === 0) {\n    console.log("Buzz")\n  } else {\n    console.log(i)\n  }\n}',
+              memo: `<code>for (let i = 1; i <= 15; i++) { }</code> <span class="memo-desc">→ boucle</span><br><code>if (condition) { } else if { } else { }</code> <span class="memo-desc">→ conditions</span><br><code>i % 3 === 0</code> <span class="memo-desc">→ i divisible par 3</span><br><code>console.log("texte")</code> <span class="memo-desc">→ afficher</span>`,
               check(o) {
                 const l = o
                   .trim()
@@ -1550,10 +1603,594 @@
           icon: "🌐",
           title: "HTML & CSS",
           desc: "Apprends à créer des pages web : structure, texte, couleurs, mise en page.",
-          tag: "Bientôt",
+          tag: "Web",
           tagCls: "cc-tag-orange",
-          soon: true,
-          levels: [],
+          levels: [
+            // ═══════════════════════════════
+            // MISSION 1 : Juste un titre
+            // ═══════════════════════════════
+            // ═══════════════════════════════
+            // MISSION 1 : Juste un titre
+            // ═══════════════════════════════
+            {
+              chapter: "Mes premiers pas",
+              title: "Afficher un titre",
+              concept: "balise h1",
+              xp: 30,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Bienvenue dans le monde du <strong>web</strong> ! 🌐 Tous les sites que tu visites — YouTube, Google, Wikipedia — sont faits avec un langage appelé <strong>HTML</strong>.",
+                  funBox: {
+                    icon: "🏗️",
+                    text: "HTML = <strong>HyperText Markup Language</strong>. Ça veut dire \"langage de balisage\". Concrètement, c'est toi qui dis au navigateur : \"<strong>ici, mets un titre</strong>\", \"<strong>là, mets du texte</strong>\".",
+                  },
+                },
+                {
+                  robot:
+                    "En HTML, on utilise des <strong>balises</strong>. Une balise, c'est un mot entre les signes <span class='highlight'>&lt; &gt;</span>. Pour créer un gros titre, on utilise la balise <span class='highlight'>&lt;h1&gt;</span>.",
+                  funBox: {
+                    icon: "🏷️",
+                    text: "Pense à une balise comme une <strong>étiquette</strong> que tu colles sur un texte pour dire ce que c'est. <strong>&lt;h1&gt;</strong> = \"ceci est un titre principal\".",
+                  },
+                },
+                {
+                  robot:
+                    "Une balise a toujours une <strong>ouverture</strong> et une <strong>fermeture</strong>. La fermeture a un <strong>/</strong> devant le nom. Le texte va <em>entre les deux</em>.",
+                  example: [
+                    {
+                      type: "comment",
+                      text: "<!-- Ouverture    Texte         Fermeture -->",
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h1&gt;</span><span class="ex-string">Bonjour le monde !</span><span class="ex-keyword">&lt;/h1&gt;</span>',
+                    },
+                  ],
+                  funBox: {
+                    icon: "🎯",
+                    text: "C'est comme un <strong>sandwich</strong> 🥪 :<br>Le pain du dessus = <strong>&lt;h1&gt;</strong><br>La garniture = ton texte<br>Le pain du dessous = <strong>&lt;/h1&gt;</strong>",
+                  },
+                },
+              ],
+              challengeDesc: `Écris un titre avec la balise <code>&lt;h1&gt;</code>. Mets le texte que tu veux entre <code>&lt;h1&gt;</code> et <code>&lt;/h1&gt;</code>.`,
+              startCode:
+                "<!-- Écris ton titre ici -->\n\n",
+              hint: "<h1>Salut tout le monde !</h1>",
+              memo: `<code>&lt;h1&gt;texte&lt;/h1&gt;</code> <span class="memo-desc">→ titre principal</span>`,
+              check(o, c) {
+                return c.includes("<h1") && c.includes("</h1>");
+              },
+              successEmoji: "🌐",
+              successMsg:
+                "Tu viens d'écrire ton premier HTML ! Chaque site web commence exactement comme ça.",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 2 : Un paragraphe
+            // ═══════════════════════════════
+            {
+              chapter: "Mes premiers pas",
+              title: "Ajouter du texte",
+              concept: "balise p",
+              xp: 30,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Super, tu sais faire un titre ! Maintenant, ajoutons du <strong>texte normal</strong> en dessous. Pour ça, on utilise la balise <span class='highlight'>&lt;p&gt;</span> (p comme <em>paragraphe</em>).",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h1&gt;</span><span class="ex-string">Mon site</span><span class="ex-keyword">&lt;/h1&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;p&gt;</span><span class="ex-string">Bienvenue sur ma page web !</span><span class="ex-keyword">&lt;/p&gt;</span>',
+                    },
+                  ],
+                  funBox: {
+                    icon: "📝",
+                    text: "Le navigateur comprend tout seul que le <strong>&lt;h1&gt;</strong> doit être gros et gras, et que le <strong>&lt;p&gt;</strong> doit être du texte normal. C'est la magie du HTML : tu donnes le <strong>sens</strong>, le navigateur gère le <strong>look</strong>.",
+                  },
+                },
+              ],
+              challengeDesc: `Écris un titre <code>&lt;h1&gt;</code> puis un paragraphe <code>&lt;p&gt;</code> en dessous. Mets le texte que tu veux !`,
+              startCode:
+                "<!-- Un titre -->\n\n\n<!-- Un paragraphe en dessous -->\n\n",
+              hint: "<h1>Mon site</h1>\n<p>Bienvenue chez moi !</p>",
+              memo: `<code>&lt;h1&gt;titre&lt;/h1&gt;</code> <span class="memo-desc">→ titre</span><br><code>&lt;p&gt;texte&lt;/p&gt;</code> <span class="memo-desc">→ paragraphe</span>`,
+              check(o, c) {
+                return c.includes("<h1") && c.includes("</h1>") && c.includes("<p") && c.includes("</p>");
+              },
+              successEmoji: "📝",
+              successMsg:
+                "Parfait ! Tu sais créer une page avec un titre et du texte. C'est la base de tous les sites web !",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 3 : Sous-titres
+            // ═══════════════════════════════
+            {
+              chapter: "Mes premiers pas",
+              title: "Les sous-titres",
+              concept: "h1 · h2 · h3",
+              xp: 35,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Il existe <strong>6 niveaux</strong> de titres en HTML, de <span class='highlight'>&lt;h1&gt;</span> (le plus gros) à <span class='highlight'>&lt;h6&gt;</span> (le plus petit). C'est comme les chapitres et sous-chapitres d'un livre.",
+                  funBox: {
+                    icon: "📖",
+                    text: "Imagine un livre :<br><strong>&lt;h1&gt;</strong> = Le titre du livre<br><strong>&lt;h2&gt;</strong> = Un chapitre<br><strong>&lt;h3&gt;</strong> = Une sous-section<br>Plus le chiffre est grand, plus le titre est petit !",
+                  },
+                },
+                {
+                  robot: "Voici à quoi ça ressemble :",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h1&gt;</span><span class="ex-string">Mon site génial</span><span class="ex-keyword">&lt;/h1&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h2&gt;</span><span class="ex-string">Qui suis-je ?</span><span class="ex-keyword">&lt;/h2&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;p&gt;</span><span class="ex-string">Je suis un apprenti codeur.</span><span class="ex-keyword">&lt;/p&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h2&gt;</span><span class="ex-string">Mes passions</span><span class="ex-keyword">&lt;/h2&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;p&gt;</span><span class="ex-string">Le code et les jeux vidéo !</span><span class="ex-keyword">&lt;/p&gt;</span>',
+                    },
+                  ],
+                },
+              ],
+              challengeDesc: `Crée une page avec un <code>&lt;h1&gt;</code> (titre principal), un <code>&lt;h2&gt;</code> (sous-titre), et un <code>&lt;p&gt;</code> sous chaque titre.`,
+              startCode:
+                "<!-- Titre principal -->\n\n\n<!-- Sous-titre -->\n\n\n<!-- Texte -->\n\n",
+              hint: "<h1>Mon blog</h1>\n<h2>Premier article</h2>\n<p>Aujourd'hui j'apprends le HTML !</p>",
+              memo: `<code>&lt;h1&gt;</code> <span class="memo-desc">→ titre principal (le plus gros)</span><br><code>&lt;h2&gt;</code> <span class="memo-desc">→ sous-titre</span><br><code>&lt;h3&gt;</code> <span class="memo-desc">→ sous-sous-titre</span><br><code>&lt;p&gt;</code> <span class="memo-desc">→ paragraphe</span>`,
+              check(o, c) {
+                return c.includes("<h1") && c.includes("<h2") && c.includes("<p");
+              },
+              successEmoji: "📚",
+              successMsg:
+                "Tu sais organiser ta page avec des titres et sous-titres !",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 4 : Gras et italique
+            // ═══════════════════════════════
+            {
+              chapter: "Formater le texte",
+              title: "Gras et italique",
+              concept: "strong · em",
+              xp: 35,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Tu veux mettre un mot en <strong>gras</strong> ? Utilise la balise <span class='highlight'>&lt;strong&gt;</span>. En <em>italique</em> ? C'est <span class='highlight'>&lt;em&gt;</span> (comme <em>emphasis</em> = accentuer).",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;p&gt;</span>J\'aime le <span class="ex-func">&lt;strong&gt;</span><span class="ex-string">chocolat</span><span class="ex-func">&lt;/strong&gt;</span> et la <span class="ex-func">&lt;em&gt;</span><span class="ex-string">vanille</span><span class="ex-func">&lt;/em&gt;</span>.<span class="ex-keyword">&lt;/p&gt;</span>',
+                    },
+                  ],
+                  funBox: {
+                    icon: "🎯",
+                    text: "On met <strong>&lt;strong&gt;</strong> et <strong>&lt;em&gt;</strong> <em>à l'intérieur</em> d'un paragraphe <strong>&lt;p&gt;</strong>. C'est comme surligner un mot dans une phrase !",
+                  },
+                },
+              ],
+              challengeDesc: `Écris un paragraphe <code>&lt;p&gt;</code> avec au moins un mot en <code>&lt;strong&gt;</code> (gras) et un en <code>&lt;em&gt;</code> (italique).`,
+              startCode:
+                "<!-- Un paragraphe avec du gras et de l'italique -->\n\n",
+              hint: '<p>Le <strong>HTML</strong> c\'est <em>super</em> facile !</p>',
+              memo: `<code>&lt;strong&gt;texte&lt;/strong&gt;</code> <span class="memo-desc">→ gras</span><br><code>&lt;em&gt;texte&lt;/em&gt;</code> <span class="memo-desc">→ italique</span><br><code>&lt;p&gt;</code> <span class="memo-desc">→ paragraphe</span>`,
+              check(o, c) {
+                return c.includes("<strong") && c.includes("<em") && c.includes("<p");
+              },
+              successEmoji: "✨",
+              successMsg:
+                "Tu sais mettre en forme ton texte ! Gras et italique, les bases de la mise en forme.",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 5 : Les listes
+            // ═══════════════════════════════
+            {
+              chapter: "Formater le texte",
+              title: "Faire une liste",
+              concept: "ul · li",
+              xp: 40,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Les listes, c'est <em>super utile</em> en HTML ! Pour créer une liste à puces, tu utilises <span class='highlight'>&lt;ul&gt;</span> (la liste) et <span class='highlight'>&lt;li&gt;</span> (chaque élément).",
+                  funBox: {
+                    icon: "📋",
+                    text: "<strong>&lt;ul&gt;</strong> = <strong>U</strong>nordered <strong>L</strong>ist (liste non-ordonnée = avec des puces)<br><strong>&lt;li&gt;</strong> = <strong>L</strong>ist <strong>I</strong>tem (élément de la liste)",
+                  },
+                },
+                {
+                  robot: "Tu mets les <span class='highlight'>&lt;li&gt;</span> <strong>à l'intérieur</strong> du <span class='highlight'>&lt;ul&gt;</span> :",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h2&gt;</span><span class="ex-string">Mes jeux préférés</span><span class="ex-keyword">&lt;/h2&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;ul&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">&lt;li&gt;</span><span class="ex-string">Minecraft</span><span class="ex-func">&lt;/li&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">&lt;li&gt;</span><span class="ex-string">Zelda</span><span class="ex-func">&lt;/li&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">&lt;li&gt;</span><span class="ex-string">Mario</span><span class="ex-func">&lt;/li&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;/ul&gt;</span>',
+                    },
+                  ],
+                },
+              ],
+              challengeDesc: `Crée un titre <code>&lt;h2&gt;</code> puis une liste <code>&lt;ul&gt;</code> avec au moins 3 éléments <code>&lt;li&gt;</code>.`,
+              startCode:
+                "<!-- Un titre pour ta liste -->\n\n\n<!-- Ta liste -->\n\n",
+              hint: "<h2>Mes films préférés</h2>\n<ul>\n  <li>Star Wars</li>\n  <li>Harry Potter</li>\n  <li>Le Seigneur des Anneaux</li>\n</ul>",
+              memo: `<code>&lt;ul&gt; ... &lt;/ul&gt;</code> <span class="memo-desc">→ liste à puces</span><br><code>&lt;li&gt;élément&lt;/li&gt;</code> <span class="memo-desc">→ un élément (à mettre dans &lt;ul&gt;)</span>`,
+              check(o, c) {
+                return c.includes("<ul") && (c.match(/<li/g) || []).length >= 3;
+              },
+              successEmoji: "📋",
+              successMsg:
+                "Tu sais créer des listes ! On en trouve sur presque tous les sites web.",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 6 : Les liens
+            // ═══════════════════════════════
+            {
+              chapter: "Liens et images",
+              title: "Créer un lien",
+              concept: "balise a · href",
+              xp: 40,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Le <strong>web</strong>, c'est des millions de pages <em>reliées entre elles</em> par des <strong>liens</strong>. C'est ce qui te permet de passer d'une page à une autre en cliquant !",
+                  funBox: {
+                    icon: "🔗",
+                    text: "D'ailleurs, \"web\" veut dire <strong>toile</strong> en anglais (comme une toile d'araignée 🕸️). Les liens sont les fils qui relient toutes les pages entre elles !",
+                  },
+                },
+                {
+                  robot:
+                    "Pour créer un lien, on utilise la balise <span class='highlight'>&lt;a&gt;</span>. Le mot spécial <span class='highlight'>href</span> indique <strong>vers où</strong> le lien mène.",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;a</span> <span class="ex-func">href</span>=<span class="ex-string">"https://google.com"</span><span class="ex-keyword">&gt;</span><span class="ex-string">Aller sur Google</span><span class="ex-keyword">&lt;/a&gt;</span>',
+                    },
+                  ],
+                  funBox: {
+                    icon: "🎯",
+                    text: "<strong>href</strong> = l'adresse (l'URL) du site<br>Le texte entre <strong>&lt;a&gt;</strong> et <strong>&lt;/a&gt;</strong> = ce qui s'affiche en bleu cliquable<br><br>C'est comme écrire une adresse sur une enveloppe ✉️",
+                  },
+                },
+              ],
+              challengeDesc: `Crée un lien <code>&lt;a&gt;</code> avec un <code>href</code> vers un site de ton choix. N'oublie pas le texte cliquable entre les balises !`,
+              startCode:
+                "<!-- Crée ton lien -->\n\n",
+              hint: '<a href="https://google.com">Visiter Google</a>',
+              memo: `<code>&lt;a href="https://..."&gt;texte&lt;/a&gt;</code> <span class="memo-desc">→ lien cliquable</span><br><span class="memo-desc">href = l'adresse du site</span>`,
+              check(o, c) {
+                return c.includes("<a ") && c.includes("href");
+              },
+              successEmoji: "🔗",
+              successMsg:
+                "Tu sais créer des liens ! C'est LA fonctionnalité qui rend le web... web !",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 7 : Première couleur
+            // ═══════════════════════════════
+            {
+              chapter: "Les couleurs (CSS)",
+              title: "Colorie ton titre",
+              concept: "style · color",
+              xp: 45,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Jusqu'ici, tout est en noir et blanc. C'est un peu triste non ? 😅 Pour ajouter des <strong>couleurs</strong>, on utilise un deuxième langage : le <strong>CSS</strong>.",
+                  funBox: {
+                    icon: "🎨",
+                    text: "Si le HTML est le <strong>squelette</strong> (la structure), le CSS est la <strong>peau et les vêtements</strong> (les couleurs, les tailles, les positions). Les deux vont ensemble !",
+                  },
+                },
+                {
+                  robot:
+                    "Pour commencer, le plus simple : ajouter <span class='highlight'>style=\"...\"</span> directement sur une balise. Par exemple, pour colorer un titre :",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h1</span> <span class="ex-func">style</span>=<span class="ex-string">"color: red"</span><span class="ex-keyword">&gt;</span><span class="ex-string">Titre rouge !</span><span class="ex-keyword">&lt;/h1&gt;</span>',
+                    },
+                    { type: "br" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h1</span> <span class="ex-func">style</span>=<span class="ex-string">"color: blue"</span><span class="ex-keyword">&gt;</span><span class="ex-string">Titre bleu !</span><span class="ex-keyword">&lt;/h1&gt;</span>',
+                    },
+                  ],
+                  funBox: {
+                    icon: "🌈",
+                    text: "Couleurs que tu peux utiliser directement :<br><strong>red</strong>, <strong>blue</strong>, <strong>green</strong>, <strong>orange</strong>, <strong>purple</strong>, <strong>pink</strong>, <strong>yellow</strong>, <strong>white</strong>...<br><br>Ou des codes comme <strong>#ff6b35</strong> (orange vif) !",
+                  },
+                },
+              ],
+              challengeDesc: `Crée un <code>&lt;h1&gt;</code> avec <code>style="color: ..."</code> pour le mettre en couleur. Choisis la couleur que tu veux !`,
+              startCode:
+                "<!-- Un titre avec de la couleur -->\n\n",
+              hint: '<h1 style="color: orange">Mon titre en couleur !</h1>',
+              memo: `<code>&lt;h1 style="color: red"&gt;</code> <span class="memo-desc">→ texte en couleur</span><br><span class="memo-desc">Couleurs : red, blue, green, orange, purple, #ff6b35...</span>`,
+              check(o, c) {
+                return c.includes("style") && c.includes("color") && c.includes("<h1");
+              },
+              successEmoji: "🎨",
+              successMsg:
+                "Tu as découvert le CSS ! Désormais, fini le noir et blanc.",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 8 : Fond coloré
+            // ═══════════════════════════════
+            {
+              chapter: "Les couleurs (CSS)",
+              title: "Un fond coloré",
+              concept: "background-color · font-size",
+              xp: 45,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Tu sais changer la couleur du texte. Maintenant, on va changer la <strong>couleur de fond</strong> avec <span class='highlight'>background-color</span> ! Et aussi la <strong>taille du texte</strong> avec <span class='highlight'>font-size</span>.",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;p</span> <span class="ex-func">style</span>=<span class="ex-string">"background-color: yellow; color: black; font-size: 20px"</span><span class="ex-keyword">&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-string">Texte sur fond jaune !</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;/p&gt;</span>',
+                    },
+                  ],
+                  funBox: {
+                    icon: "💡",
+                    text: "Tu peux combiner plusieurs propriétés CSS en les séparant par un <strong>;</strong> (point-virgule) :<br><span style='font-family:Fira Code,monospace;font-size:12px'>color: white<strong>;</strong> background-color: blue<strong>;</strong> font-size: 24px</span>",
+                  },
+                },
+              ],
+              challengeDesc: `Crée un titre et un paragraphe. Donne au paragraphe un <code>background-color</code> et un <code>font-size</code>.`,
+              startCode:
+                "<!-- Titre -->\n\n\n<!-- Paragraphe avec fond coloré -->\n\n",
+              hint: '<h1 style="color: #22d68a">Mon titre</h1>\n<p style="background-color: #ff6b35; color: white; font-size: 20px">Texte sur fond orange !</p>',
+              memo: `<code>style="color: red"</code> <span class="memo-desc">→ couleur du texte</span><br><code>style="background-color: yellow"</code> <span class="memo-desc">→ couleur de fond</span><br><code>style="font-size: 20px"</code> <span class="memo-desc">→ taille du texte</span><br><span class="memo-desc">Sépare les propriétés par <strong>;</strong></span>`,
+              check(o, c) {
+                return c.includes("background-color") && c.includes("font-size");
+              },
+              successEmoji: "🌈",
+              successMsg:
+                "Tu maîtrises les couleurs de fond et la taille du texte !",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 9 : Les div et padding
+            // ═══════════════════════════════
+            {
+              chapter: "Les boîtes",
+              title: "Créer une carte",
+              concept: "div · padding · border-radius",
+              xp: 50,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Tu vois ces jolies <strong>cartes</strong> avec des coins arrondis sur les sites web ? On peut les créer avec la balise <span class='highlight'>&lt;div&gt;</span> et du CSS !",
+                  funBox: {
+                    icon: "📦",
+                    text: "<strong>&lt;div&gt;</strong> = une boîte vide. Toute seule elle ne fait rien, mais avec du CSS elle devient une <strong>carte, un encadré, une section</strong>... C'est la balise la plus utilisée du web !",
+                  },
+                },
+                {
+                  robot:
+                    "Les propriétés magiques pour faire une belle carte :<br><br>• <span class='highlight'>padding</span> = espace à l'intérieur (pour ne pas coller le texte au bord)<br>• <span class='highlight'>border-radius</span> = arrondir les coins<br>• <span class='highlight'>border</span> = ajouter une bordure",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;div</span> <span class="ex-func">style</span>=<span class="ex-string">"background-color: #1a1a2e; color: white; padding: 20px; border-radius: 12px; border: 2px solid orange"</span><span class="ex-keyword">&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-keyword">&lt;h2&gt;</span><span class="ex-string">Ma carte</span><span class="ex-keyword">&lt;/h2&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-keyword">&lt;p&gt;</span><span class="ex-string">Du contenu à l\'intérieur !</span><span class="ex-keyword">&lt;/p&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;/div&gt;</span>',
+                    },
+                  ],
+                },
+              ],
+              challengeDesc: `Crée une <code>&lt;div&gt;</code> avec du CSS (background-color, padding, border-radius). Mets un titre et du texte dedans.`,
+              startCode:
+                "<!-- Ta carte -->\n\n",
+              hint: '<div style="background-color: #1a1a2e; color: white; padding: 20px; border-radius: 12px; border: 2px solid #22d68a">\n  <h2>Hello !</h2>\n  <p>Ma première carte.</p>\n</div>',
+              memo: `<code>&lt;div style="..."&gt; ... &lt;/div&gt;</code> <span class="memo-desc">→ boîte/carte</span><br><code>padding: 20px</code> <span class="memo-desc">→ espace intérieur</span><br><code>border-radius: 12px</code> <span class="memo-desc">→ coins arrondis</span><br><code>border: 2px solid orange</code> <span class="memo-desc">→ bordure</span><br><code>background-color: ...</code> <span class="memo-desc">→ fond</span>`,
+              check(o, c) {
+                return c.includes("<div") && c.includes("padding") && c.includes("background");
+              },
+              successEmoji: "📦",
+              successMsg:
+                "Tu sais créer des cartes ! C'est le secret derrière le design de quasiment tous les sites modernes.",
+            },
+
+            // ═══════════════════════════════
+            // MISSION 10 : Balise style
+            // ═══════════════════════════════
+            {
+              chapter: "Les boîtes",
+              title: "La balise style",
+              concept: "balise style · sélecteurs CSS",
+              xp: 55,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "Mettre le CSS dans <span class='highlight'>style=\"...\"</span> sur chaque balise, ça marche, mais ça devient vite le bazar si tu as 50 balises ! 😅 La <strong>bonne pratique</strong>, c'est de tout regrouper dans une balise <span class='highlight'>&lt;style&gt;</span> en haut.",
+                  funBox: {
+                    icon: "🧹",
+                    text: "C'est comme ranger sa chambre : au lieu d'avoir des vêtements éparpillés partout, tu les ranges tous dans l'armoire (la balise <strong>&lt;style&gt;</strong>) !",
+                  },
+                },
+                {
+                  robot:
+                    "Dans la balise <span class='highlight'>&lt;style&gt;</span>, tu écris le <strong>nom de la balise</strong> puis les propriétés entre <strong>{ }</strong> :",
+                  example: [
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;style&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">h1</span> {',
+                    },
+                    {
+                      type: "code",
+                      text: '    <span class="ex-keyword">color</span>: <span class="ex-string">orange</span>;',
+                    },
+                    { type: "code", text: "  }" },
+                    {
+                      type: "code",
+                      text: '  <span class="ex-func">p</span> {',
+                    },
+                    {
+                      type: "code",
+                      text: '    <span class="ex-keyword">color</span>: <span class="ex-string">#4facfe</span>;',
+                    },
+                    {
+                      type: "code",
+                      text: '    <span class="ex-keyword">font-size</span>: <span class="ex-number">18px</span>;',
+                    },
+                    { type: "code", text: "  }" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;/style&gt;</span>',
+                    },
+                    { type: "br" },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;h1&gt;</span><span class="ex-string">Titre</span><span class="ex-keyword">&lt;/h1&gt;</span>',
+                    },
+                    {
+                      type: "code",
+                      text: '<span class="ex-keyword">&lt;p&gt;</span><span class="ex-string">Texte bleu en 18px</span><span class="ex-keyword">&lt;/p&gt;</span>',
+                    },
+                  ],
+                  funBox: {
+                    icon: "✨",
+                    text: "L'avantage : le CSS dans <strong>&lt;style&gt;</strong> s'applique à <strong>TOUTES</strong> les balises du même type. Écrire <strong>p { color: blue }</strong> rend TOUS les paragraphes bleus d'un coup !",
+                  },
+                },
+              ],
+              challengeDesc: `Crée une balise <code>&lt;style&gt;</code> avec du CSS pour <code>h1</code> et <code>p</code>. Puis écris un titre et un paragraphe en dessous.`,
+              startCode:
+                "<style>\n  /* Ton CSS ici */\n  \n</style>\n\n<!-- Ton HTML ici -->\n\n",
+              hint: "<style>\n  h1 {\n    color: #ff6b35;\n  }\n  p {\n    color: #4facfe;\n    font-size: 18px;\n  }\n</style>\n\n<h1>Hello World</h1>\n<p>Ma page avec du style !</p>",
+              memo: `<code>&lt;style&gt; ... &lt;/style&gt;</code> <span class="memo-desc">→ bloc CSS en haut</span><br><code>h1 { color: orange; }</code> <span class="memo-desc">→ style pour tous les h1</span><br><code>p { font-size: 18px; }</code> <span class="memo-desc">→ style pour tous les p</span>`,
+              check(o, c) {
+                return c.includes("<style") && c.includes("{") && c.includes("}") && c.includes("<h1");
+              },
+              successEmoji: "🧹",
+              successMsg:
+                "Tu sais séparer le CSS du HTML ! C'est comme ça que font les vrais développeurs.",
+            },
+
+            // ═══════════════════════════════
+            // BOSS FINAL HTML
+            // ═══════════════════════════════
+            {
+              chapter: "Boss Final",
+              title: "Ta mini-page web",
+              concept: "tout combiner !",
+              xp: 100,
+              lang: "html",
+              lesson: [
+                {
+                  robot:
+                    "<strong>Boss Final HTML</strong> ! 🐉 Tu vas créer une <em>vraie mini-page web complète</em> en utilisant tout ce que tu as appris.",
+                  funBox: {
+                    icon: "🏆",
+                    text: "C'est le moment de tout combiner : des <strong>titres</strong>, du <strong>texte</strong>, une <strong>liste</strong>, un <strong>lien</strong>, et du <strong>CSS</strong>. Ta première vraie page web !",
+                  },
+                },
+                {
+                  robot:
+                    "Ta page doit contenir :<br><br>1. Une balise <span class='highlight'>&lt;style&gt;</span> avec du CSS<br>2. Un <span class='highlight'>&lt;h1&gt;</span> coloré<br>3. Un <span class='highlight'>&lt;p&gt;</span> de présentation<br>4. Une <span class='highlight'>&lt;ul&gt;</span> avec au moins 3 éléments<br>5. Un <span class='highlight'>&lt;a&gt;</span> (lien) vers un site",
+                  funBox: {
+                    icon: "💡",
+                    text: "Rappel des propriétés CSS :<br><strong>color</strong> = couleur du texte<br><strong>background-color</strong> = couleur de fond<br><strong>font-size</strong> = taille du texte<br><strong>padding</strong> = espace intérieur<br><strong>border-radius</strong> = coins arrondis",
+                  },
+                },
+              ],
+              challengeDesc: `Crée ta page complète :<br>• <code>&lt;style&gt;</code> avec du CSS<br>• Un <code>&lt;h1&gt;</code><br>• Un <code>&lt;p&gt;</code><br>• Une liste <code>&lt;ul&gt;</code> avec 3+ éléments<br>• Un lien <code>&lt;a&gt;</code>`,
+              startCode:
+                "<style>\n  /* Ton CSS */\n  \n</style>\n\n<!-- Titre -->\n\n\n<!-- Présentation -->\n\n\n<!-- Liste -->\n\n\n<!-- Lien -->\n\n",
+              hint: '<style>\n  body { background-color: #0c0e17; color: white; font-family: sans-serif; padding: 20px; }\n  h1 { color: #22d68a; }\n  a { color: #4facfe; }\n</style>\n\n<h1>Mon super site</h1>\n<p>Bienvenue ! Voici mes passions :</p>\n<ul>\n  <li>Le code</li>\n  <li>Les jeux</li>\n  <li>La musique</li>\n</ul>\n<a href="https://google.com">Visiter Google</a>',
+              memo: `<code>&lt;style&gt; h1 { color: ...; } &lt;/style&gt;</code> <span class="memo-desc">→ CSS</span><br><code>&lt;h1&gt; &lt;h2&gt; &lt;p&gt;</code> <span class="memo-desc">→ titres et texte</span><br><code>&lt;ul&gt; &lt;li&gt;</code> <span class="memo-desc">→ liste</span><br><code>&lt;a href="..."&gt;</code> <span class="memo-desc">→ lien</span><br><code>&lt;strong&gt; &lt;em&gt;</code> <span class="memo-desc">→ gras / italique</span><br><code>color, background-color, padding, border-radius, font-size</code> <span class="memo-desc">→ propriétés CSS</span>`,
+              check(o, c) {
+                return (
+                  c.includes("<style") &&
+                  c.includes("<h1") &&
+                  c.includes("<p") &&
+                  c.includes("<ul") &&
+                  (c.match(/<li/g) || []).length >= 3 &&
+                  c.includes("<a ") &&
+                  c.includes("href")
+                );
+              },
+              successEmoji: "🏆",
+              successMsg:
+                "INCROYABLE ! Tu viens de créer une vraie page web complète ! HTML pour la structure, CSS pour le style. Tu es prêt pour construire ton propre site !",
+            },
+          ],
         },
 
         python: {
@@ -1669,6 +2306,7 @@
       function getLangInfo(l) {
         if (l === "fr") return { label: "🇫🇷 Français", cls: "lang-fr" };
         if (l === "mix") return { label: "🇫🇷🇬🇧 Bilingue", cls: "lang-mix" };
+        if (l === "html") return { label: "🌐 HTML/CSS", cls: "lang-mix" };
         return { label: "🇬🇧 JavaScript", cls: "lang-en" };
       }
 
@@ -1697,13 +2335,13 @@
         app.innerHTML = `<div class="welcome">
     <div class="welcome-robot">🤖</div>
     <h1>Bienvenue sur <span>CODE QUEST</span></h1>
-    <div class="welcome-sub">Le jeu qui t'apprend à coder, étape par étape, en t'amusant. Créé par Shizou</div>
+    <div class="welcome-sub">Le jeu qui t'apprend à coder, étape par étape, en t'amusant. Crée par Shizou</div>
 
     <div class="welcome-intro">
       <div class="robot-mini">
         <div class="robot-face">🤖</div>
         <div class="robot-text">
-          Salut, c'est moi <strong>Nono, le petit robot l'ami de Shizou</strong> ! 
+          Salut, c'est moi <strong>Nono, le petit robot l'ami de Shizou</strong> ! Je suis ton assistant robot. 
           Je vais t'accompagner dans ton aventure pour apprendre à programmer. 
           Pas besoin de connaissances, on part de <em>zéro</em>. 
           Choisis un parcours ci-dessous et c'est parti ! 🚀
@@ -1719,12 +2357,12 @@
         <span class="cc-tag cc-tag-green">Commencer ici</span>
         ${basesTotal > 0 ? `<div class="cc-progress"><div class="cc-progress-fill" style="width:${basesPct}%"></div></div><div class="cc-progress-text">${basesCompleted}/${basesTotal} missions</div>` : ""}
       </div>
-      <div class="course-card locked">
-        <span class="cc-soon">Bientôt</span>
+      <div class="course-card" onclick="selectCourse('html')">
         <span class="cc-icon">🌐</span>
         <div class="cc-title">HTML & CSS</div>
         <div class="cc-desc">Apprends à créer tes propres pages web : structure, texte, couleurs, images, mise en page.</div>
-        <span class="cc-tag cc-tag-orange">Prochainement</span>
+        <span class="cc-tag cc-tag-orange">Créer des sites</span>
+        ${COURSES.html.levels.length > 0 ? `<div class="cc-progress"><div class="cc-progress-fill" style="width:${Math.round((getCompleted("html").size / COURSES.html.levels.length) * 100)}%"></div></div><div class="cc-progress-text">${getCompleted("html").size}/${COURSES.html.levels.length} missions</div>` : ""}
       </div>
       <div class="course-card locked">
         <span class="cc-soon">Bientôt</span>
@@ -1858,12 +2496,20 @@
           html += `<div class="hint-reveal">💡 <strong>Indice :</strong>\n${lvl.hint}</div>`;
         html += `<div class="editor-grid">
     <div class="editor-box"><div class="pane-tab"><div class="pane-dot"></div> Ton code</div><textarea id="code-input" spellcheck="false" placeholder="Écris ton code ici...">${lvl.startCode}</textarea></div>
-    <div class="output-box"><div class="pane-tab"><div class="pane-dot out"></div> Résultat</div><div id="output">Clique sur ▶ Exécuter pour tester...</div></div>
+    <div class="output-box"><div class="pane-tab"><div class="pane-dot out"></div> ${lvl.lang === "html" ? "Aperçu" : "Résultat"}</div><div id="output">${lvl.lang === "html" ? "Clique sur ▶ Exécuter pour voir ta page..." : "Clique sur ▶ Exécuter pour tester..."}</div></div>
   </div>
   <div class="editor-actions">
     <div class="actions-left"><button class="btn btn-primary" onclick="runCode()">▶ Exécuter</button><button class="btn btn-secondary btn-small" onclick="showHint()">💡 Indice</button><button class="btn btn-secondary btn-small" onclick="resetCode()">↺ Reset</button></div>
     <div class="actions-right"><button class="btn btn-secondary btn-small" onclick="goBackToLesson()">📖 Revoir le cours</button></div>
-  </div></div>`;
+  </div>`;
+        // MEMO CARD
+        if (lvl.memo) {
+          html += `<div class="memo-card">
+      <div class="memo-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">📋 Fiche mémo — Rappel des codes ▾</div>
+      <div class="memo-content">${lvl.memo}</div>
+    </div>`;
+        }
+        html += `</div>`;
         app.innerHTML = html;
         const ta = document.getElementById("code-input");
         ta.addEventListener("keydown", function (e) {
@@ -1904,6 +2550,41 @@
         const code = document.getElementById("code-input").value;
         const outEl = document.getElementById("output");
         const lvl = getLevels()[currentLevel];
+
+        // HTML course: render in preview
+        if (lvl.lang === "html") {
+          outEl.innerHTML = "";
+          const iframe = document.createElement("iframe");
+          iframe.style.cssText =
+            "width:100%;height:100%;border:none;background:#fff;border-radius:8px;min-height:200px";
+          outEl.appendChild(iframe);
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          doc.open();
+          doc.write(code);
+          doc.close();
+
+          if (lvl.check("", code)) {
+            if (!getCompleted(currentCourse).has(currentLevel)) {
+              setCompleted(currentCourse, currentLevel);
+              xp += lvl.xp;
+              consecutiveWins++;
+            }
+            document.getElementById("success-emoji").textContent =
+              lvl.successEmoji;
+            document.getElementById("success-title").textContent =
+              currentLevel === getLevels().length - 1
+                ? "🏆 PARCOURS TERMINÉ !"
+                : "Bravo !";
+            document.getElementById("success-xp").textContent =
+              "+" + lvl.xp + " XP";
+            document.getElementById("success-msg").textContent = lvl.successMsg;
+            document.getElementById("success-overlay").classList.add("show");
+            updateHeader();
+          }
+          return;
+        }
+
+        // JS courses
         const result = interpret(code, lvl.lang);
         outEl.textContent = result || "(rien affiché)";
         if (result.startsWith("❌")) {
